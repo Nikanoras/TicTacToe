@@ -1,5 +1,4 @@
-﻿using System;
-namespace TicTacToe
+﻿namespace TicTacToe
 {
     public class Game
     {

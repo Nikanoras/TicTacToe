@@ -7,28 +7,36 @@ namespace TicTacToe
     {
         static void Main()
         {
-            var game = new Game();
-            var currentGameState = new[] { new[] { "", "", "" }, new[] { "", "", "" }, new[] { "", "", "" } };
-
-            string winner = string.Empty;
-            for (int turn = 1; turn < 10; turn++)
+            bool isGameRestarted;
+            do
             {
-                PrintCurrentGameState(currentGameState);
-                winner = game.DetermineWinner(currentGameState);
-                if (IsWinnerDetermined(winner))
+                var game = new Game();
+                var currentGameState = new[] { new[] { "", "", "" }, new[] { "", "", "" }, new[] { "", "", "" } };
+                string winner = string.Empty;
+                for (int turn = 1; turn < 10; turn++)
                 {
-                    Console.WriteLine($"The winner is: {winner}");
-                    break;
-                }
-                RegisterNextTurn(currentGameState, turn);
+                    PrintCurrentGameState(currentGameState);
+                    winner = game.DetermineWinner(currentGameState);
+                    if (IsWinnerDetermined(winner))
+                    {
+                        Console.WriteLine($"The winner is: {winner}");
+                        break;
+                    }
+                    RegisterNextTurn(currentGameState, turn);
 
+                    Console.Clear();
+                }
+                if (!IsWinnerDetermined(winner))
+                {
+                    PrintCurrentGameState(currentGameState);
+                    Console.WriteLine("It's a draw");
+                }
+
+                Console.WriteLine($"Restart game? \"y\"/\"n\"");
+                string restartGame = Console.ReadLine();
+                isGameRestarted = restartGame == "y";
                 Console.Clear();
-            }
-            if (!IsWinnerDetermined(winner))
-            {
-                PrintCurrentGameState(currentGameState);
-                Console.WriteLine("It's a draw");
-            }
+            } while (isGameRestarted);
         }
 
         private static void RegisterNextTurn(string[][] currentGameState, int turn)
@@ -71,7 +79,7 @@ namespace TicTacToe
 
         private static bool IsWinnerDetermined(string winner)
         {
-            return string.IsNullOrEmpty(winner);
+            return !string.IsNullOrEmpty(winner);
         }
 
         private static void PrintCurrentGameState(string[][] currentGameState)
